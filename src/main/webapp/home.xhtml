@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui" 
+   template="/WEB-INF/templates/default.xhtml">
+   <ui:define name="content">
+      <h1>Hello dialogs!</h1>
+      <h:form id="bv">
+		<p:inputText id="article1" value="#{articleHome.selected1.title}" readonly="true"/> 
+		<p:commandButton id="selectArticle1" value="Select" onclick="dlg1.show()"/><br />
+		
+		<p:inputText id="article2" value="#{articleHome.selected2.title}" readonly="true"/> 
+		<p:commandButton id="selectArticle2" value="Select" onclick="dlg2.show()"/>
+		
+     </h:form>
+     <h:form id="dialogForm">
+         <p:dialog id="modalDialog" header="Search and select article" widgetVar="dlg1" modal="true" height="250" dynamic="true">
+          	<p:ajax event="close" listener="#{articleHome.closeListener1}"/>
+          	<p:inputText value="#{articleHome.searchCriteria1}" id="searchCriteria1" />  
+    		<p:commandButton process="@this, searchCriteria1" update="dialog1Data" 
+    						 actionListener="#{articleHome.selectArticle1}" 
+    						 value="Filter" />
+    		<p:dataTable value="#{articleHome.filteredList1}" var="_article" id="dialog1Data" 
+    					 selection="#{articleHome.selected1}"
+    				     selectionMode="single"
+    				     rowKey="#{_article.id}">
+    			<p:ajax event="rowSelect" update=":bv:article1, @form" onsuccess="dlg1.hide()"/>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Title" />
+					</f:facet>
+					
+					<h:outputText value="#{_article.title}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Submitted" />
+					</f:facet>
+					<h:outputText value="#{_article.created}" />
+        		</p:column>
+    		</p:dataTable>  
+		 </p:dialog>  
+      </h:form>
+      
+      <h:form id="dialogForm2">
+         <p:dialog id="modalDialog" header="Modal Dialog" widgetVar="dlg2" modal="true" height="100" dynamic="true">
+          	<p:inputText id="searchCriteria2"/>   
+    		<p:commandButton onclick="dlg2.hide()" value="Filter" id="dlg2Close"/>  
+		 </p:dialog>  
+      </h:form>
+   </ui:define>
+</ui:composition>

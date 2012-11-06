@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui" 
+   template="/WEB-INF/templates/default.xhtml">
+   <ui:define name="content">
+      <h1>List of available articles</h1>
+      <h:form id="articlesForm">
+      	<div class="article-list">
+     	<ui:repeat value="#{provider.articles}" var="article">
+			<h2><h:outputText value="#{article.title}" /><h:outputText styleClass="header-date" value="#{article.created}"></h:outputText></h2>
+			<p>#{article.body}</p>
+			<p:separator />
+  		</ui:repeat>
+  		</div>
+      </h:form>
+   </ui:define>
+</ui:composition>
